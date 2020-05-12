@@ -1,0 +1,16 @@
+# Webpack settings
+    ## babel-loader
+    ## SCSS-loader
+    ## ESLint
+    ## 2 modes (dev
+                    # Dev server
+                    # source-maps
+                    # ES-Lint
+                    # not-minified JS & CSS
+                    and
+                prod
+                    # minification
+                )
+# Git version control flow
+    Production
+    Development
