@@ -2,10 +2,20 @@ const CODES = {
   A: 65,
   Z: 91,
 };
-function createCell(el, col) {
-  return `
-    <div class="cell" contenteditable data-col="${col}"></div>
-  `;
+function createCell(row) {
+  // eslint-disable-next-line space-before-function-paren
+  return function (_, col) {
+    return `
+      <div 
+        class="cell" 
+        contenteditable 
+        data-col="${col}"
+        data-type="cell"
+        data-id="${row + 1}:${col}"
+      >
+      </div>
+    `;
+  };
 }
 function createColumn(col, index) {
   return `
@@ -39,9 +49,9 @@ export function createTable(rowsCount = 20) {
   const rows = [];
   const cols = new Array(colsCount).fill('').map(toChar).map(toColumn).join('');
   rows.push(createRow('', cols));
-  for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill('').map(createCell).join('');
-    rows.push(createRow(i + 1, cells));
+  for (let row = 0; row < rowsCount; row++) {
+    const cells = new Array(colsCount).fill('').map(createCell(row)).join('');
+    rows.push(createRow(row + 1, cells));
   }
   return rows.join('');
 }
