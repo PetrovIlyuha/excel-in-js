@@ -50,8 +50,27 @@ class Dom {
   findAll(selector) {
     return this.$el.querySelectorAll(selector);
   }
+  findOneCell(selector) {
+    return $(this.$el.querySelector(selector));
+  }
   css(styles = {}) {
     Object.keys(styles).forEach((key) => (this.$el.style[key] = styles[key]));
+  }
+  id(parse) {
+    if (parse) {
+      const parsedId = this.id().split(':');
+      return {
+        row: +parsedId[0],
+        col: +parsedId[1],
+      };
+    }
+    return this.data.id;
+  }
+  addClass(className) {
+    this.$el.classList.add(className);
+  }
+  removeClass(className) {
+    this.$el.classList.remove(className);
   }
 }
 export function $(selector) {
