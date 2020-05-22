@@ -13,7 +13,8 @@
     "operator-linebreak": "off",
     "no-unused-vars": "off",
     "indent": "off",
-    "space-before-function-paren": "warn"
+    "space-before-function-paren": "off",
+    "no-case-declarations": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }
