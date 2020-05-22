@@ -2,35 +2,56 @@ const CODES = {
   A: 65,
   Z: 91,
 };
-function createCell(row) {
+const DEFAULT_WIDTH = 120;
+const DEFAULT_HEIGHT = 24;
+function getColWidth(state, index) {
+  return `${state[index] || DEFAULT_WIDTH}px`;
+}
+function getRowHeight(state, index) {
+  return `${state[index] || DEFAULT_HEIGHT}px`;
+}
+function createCell(state, row) {
   // eslint-disable-next-line space-before-function-paren
   return function (_, col) {
+    const width = getColWidth(state, col);
     return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
+        style="width: ${width}"
         data-id="${row + 1}:${col}"
       >
       </div>
     `;
   };
 }
-function createColumn(col, index) {
+function createColumn(col, index, colWidth) {
   return `
-    <div class="column" data-type="resizable" data-col="${index}">
+    <div 
+      class="column" 
+      data-type="resizable" 
+      data-col="${index}" 
+      style="width: ${colWidth}"
+    >
       ${col}
       <div class="col-resize" data-resize="col"></div>
     </div>
   `;
 }
-function createRow(index, content) {
+function createRow(index, content, state) {
   const resizer = index
     ? `<div class="row-resize" data-resize="row"></div>`
     : '';
+  const height = getRowHeight(state, index);
   return `
-    <div class="row" data-type="resizable">
+    <div 
+      class="row" 
+      data-type="resizable" 
+      data-row="${index}"
+      style="height: ${height}"
+    >
       <div class="row-info">${index} 
         ${resizer}
       </div>  
@@ -38,20 +59,39 @@ function createRow(index, content) {
     </div>
   `;
 }
-function toChar(el, index) {
+function toChar(__, index) {
   return String.fromCharCode(CODES.A + index);
 }
-function toColumn(el, index) {
-  return createColumn(el, index);
+function toColumn({ col, index, colWidth }) {
+  return createColumn(col, index, colWidth);
 }
-export function createTable(rowsCount = 20) {
+
+function withWidthFrom(state) {
+  return (col, index) => {
+    return {
+      col,
+      index,
+      colWidth: getColWidth(state.colState, index),
+    };
+  };
+}
+
+export function createTable(rowsCount = 20, state = {}) {
   const colsCount = CODES.Z - CODES.A;
   const rows = [];
-  const cols = new Array(colsCount).fill('').map(toChar).map(toColumn).join('');
-  rows.push(createRow('', cols));
+  const cols = new Array(colsCount)
+    .fill('')
+    .map(toChar)
+    .map(withWidthFrom(state))
+    .map(toColumn)
+    .join('');
+  rows.push(createRow('', cols, state.rowState));
   for (let row = 0; row < rowsCount; row++) {
-    const cells = new Array(colsCount).fill('').map(createCell(row)).join('');
-    rows.push(createRow(row + 1, cells));
+    const cells = new Array(colsCount)
+      .fill('')
+      .map(createCell(state.colState, row))
+      .join('');
+    rows.push(createRow(row + 1, cells, state.rowState));
   }
   return rows.join('');
 }
