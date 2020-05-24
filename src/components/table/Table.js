@@ -26,16 +26,13 @@ export class Table extends ExcelComponent {
   init() {
     super.init();
     this.selectCell(this.$root.findOneCell('[data-id="1:0"]'));
-    this.emitter.subscribe('formula:input', (text) => {
+    this.$on('formula:input', (text) => {
       this.selection.current.text(text);
+      this.updateTextInStore($(event.target).text());
     });
     this.$on('formula:done', () => {
       this.selection.current.focus();
     });
-
-    // this.$subscribe((state) => {
-    //   console.log('tablestate', state);
-    // });
   }
 
   selectCell($cell) {
@@ -68,6 +65,8 @@ export class Table extends ExcelComponent {
     }
   }
 
+  storeChanged() {}
+
   onKeydown(event) {
     const keys = [
       'Enter',
@@ -86,7 +85,16 @@ export class Table extends ExcelComponent {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispatch(
+      actions.changeText({
+        id: this.selection.current.id(),
+        value,
+      })
+    );
+  }
+
   onInput(event) {
-    this.$emit('table:input', $(event.target));
+    this.updateTextInStore($(event.target).text());
   }
 }

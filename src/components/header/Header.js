@@ -8,6 +8,7 @@ export class Header extends ExcelComponent {
       ...options,
     });
   }
+
   toHTML() {
     return `    
       <input type="text" class="input" value="New Table" />
