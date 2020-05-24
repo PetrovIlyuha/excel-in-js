@@ -13,7 +13,9 @@ function getRowHeight(state, index) {
 function createCell(state, row) {
   // eslint-disable-next-line space-before-function-paren
   return function (_, col) {
-    const width = getColWidth(state, col);
+    const width = getColWidth(state.colState, col);
+    const id = `${row + 1}:${col}`;
+    const data = state.dataState[id];
     return `
       <div 
         class="cell" 
@@ -21,8 +23,8 @@ function createCell(state, row) {
         data-col="${col}"
         data-type="cell"
         style="width: ${width}"
-        data-id="${row + 1}:${col}"
-      >
+        data-id="${id}"
+      >${data || ''}
       </div>
     `;
   };
@@ -89,7 +91,7 @@ export function createTable(rowsCount = 20, state = {}) {
   for (let row = 0; row < rowsCount; row++) {
     const cells = new Array(colsCount)
       .fill('')
-      .map(createCell(state.colState, row))
+      .map(createCell(state, row))
       .join('');
     rows.push(createRow(row + 1, cells, state.rowState));
   }
