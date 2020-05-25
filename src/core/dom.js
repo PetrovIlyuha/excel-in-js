@@ -57,6 +57,13 @@ class Dom {
   getCoords() {
     return this.$el.getBoundingClientRect();
   }
+  getStyles(styles = []) {
+    return styles.reduce((result, style) => {
+      result[style] = this.$el.style[style];
+      return result;
+    }, {});
+  }
+
   findAll(selector) {
     return this.$el.querySelectorAll(selector);
   }

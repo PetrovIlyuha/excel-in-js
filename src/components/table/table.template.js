@@ -1,3 +1,5 @@
+import { defaultStyles } from '../../constants';
+import { toKebabCase } from './table.functions';
 const CODES = {
   A: 65,
   Z: 91,
@@ -16,13 +18,16 @@ function createCell(state, row) {
     const width = getColWidth(state.colState, col);
     const id = `${row + 1}:${col}`;
     const data = state.dataState[id];
+    const styles = Object.keys(defaultStyles)
+      .map((key) => `${toKebabCase(key)}: ${defaultStyles[key]}`)
+      .join('; ');
     return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
-        style="width: ${width}"
+        style="${styles}; width: ${width}"
         data-id="${id}"
       >${data || ''}
       </div>
