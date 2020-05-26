@@ -1,3 +1,5 @@
+import { toKebabCase } from '../components/table/table.functions';
+
 export function capitalize(string) {
   if (typeof string !== 'string') {
     return '';
@@ -37,3 +39,22 @@ export function isEqual(prevState, newState) {
   }
   return prevState === newState;
 }
+
+export function toInlineStyles(styles = {}) {
+  return Object.keys(styles)
+    .map((key) => `${toKebabCase(key)}: ${styles[key]}`)
+    .join(';');
+}
+
+export const debounce = (fn, wait) => {
+  let timeout;
+  return function (...args) {
+    const laterCalledFn = () => {
+      clearTimeout(timeout);
+      // eslint-disable-next-line no-invalid-this
+      fn.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(laterCalledFn, wait);
+  };
+};
