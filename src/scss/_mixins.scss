@@ -5,10 +5,10 @@
   text-align: center;
   position: relative;
   display: inline-block;
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(135, 105, 150, 0.911);
 
   & i {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   &:active,
@@ -17,7 +17,8 @@
   }
 
   &:hover {
-    background: #eee;
+    background: rgb(75, 62, 62);
+    color: rgb(207, 191, 191);
     cursor: pointer;
   }
 }
