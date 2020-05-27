@@ -7,6 +7,7 @@ import { matrix } from '../../core/utils';
 import { $ } from '@core/dom';
 import * as actions from '../../redux/actions';
 import { defaultStyles } from '../../constants';
+import { parse } from '../../core/parse';
 export class Table extends ExcelComponent {
   static className = 'excel__table';
   constructor($root, options) {
@@ -27,15 +28,21 @@ export class Table extends ExcelComponent {
   init() {
     super.init();
     this.selectCell(this.$root.findOneCell('[data-id="1:0"]'));
-    this.$on('formula:input', (text) => {
-      this.selection.current.text(text);
-      this.updateTextInStore($(event.target).text());
+    this.$on('formula:input', (value) => {
+      this.selection.current.attr('data-value', value).text(parse(value));
+      this.updateTextInStore(value);
     });
     this.$on('formula:done', () => {
       this.selection.current.focus();
     });
-    this.$on('toolbar:applyStyle', (style) => {
-      this.selection.applyStyle(style);
+    this.$on('toolbar:applyStyle', (value) => {
+      this.selection.applyStyle(value);
+      this.$dispatch(
+        actions.applyStyle({
+          value,
+          ids: this.selection.selectedIds,
+        })
+      );
     });
   }
 
