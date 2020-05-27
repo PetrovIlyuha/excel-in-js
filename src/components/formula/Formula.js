@@ -1,5 +1,5 @@
 import { ExcelComponent } from '../../core/ExcelComponent';
-import { $ } from '@core/dom';
+import { $ } from '../../core/dom';
 export class Formula extends ExcelComponent {
   static className = 'excel__formula';
 
@@ -34,7 +34,7 @@ export class Formula extends ExcelComponent {
 
     this.$formula = this.$root.findOneCell('#formula');
     this.$on('table:select', ($cell) => {
-      this.$formula.text($cell.text());
+      this.$formula.text($cell.data.value);
     });
   }
 
