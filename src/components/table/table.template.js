@@ -1,5 +1,6 @@
 import { defaultStyles } from '../../constants';
-import { toKebabCase } from './table.functions';
+import { toInlineStyles } from '../../core/utils';
+import { parse } from '../../core/parse';
 const CODES = {
   A: 65,
   Z: 91,
@@ -18,18 +19,20 @@ function createCell(state, row) {
     const width = getColWidth(state.colState, col);
     const id = `${row + 1}:${col}`;
     const data = state.dataState[id];
-    const styles = Object.keys(defaultStyles)
-      .map((key) => `${toKebabCase(key)}: ${defaultStyles[key]}`)
-      .join('; ');
+    const styles = toInlineStyles({
+      ...defaultStyles,
+      ...state.stylesState[id],
+    });
     return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
+        data-value="${data || ''}"
         style="${styles}; width: ${width}"
         data-id="${id}"
-      >${data || ''}
+      >${parse(data) || ''}
       </div>
     `;
   };
@@ -40,7 +43,12 @@ function createColumn(col, index, colWidth) {
       class="column" 
       data-type="resizable" 
       data-col="${index}" 
-      style="width: ${colWidth}"
+      style="
+        width: ${colWidth}; 
+        background: #212325;
+        color: yellow; 
+        font-weight: bold;
+        "
     >
       ${col}
       <div class="col-resize" data-resize="col"></div>
