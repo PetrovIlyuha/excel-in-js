@@ -58,3 +58,11 @@ export const debounce = (fn, wait) => {
     timeout = setTimeout(laterCalledFn, wait);
   };
 };
+
+export const clone = (obj) => {
+  return Object.assign({}, { ...obj });
+};
+
+export const preventDefault = (event) => {
+  event.preventDefault();
+};
