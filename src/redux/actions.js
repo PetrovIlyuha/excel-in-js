@@ -1,9 +1,10 @@
 import {
-  TABLE_RESIZE,
-  CHANGE_TEXT,
-  CHANGE_STYLES,
   APPLY_STYLE,
+  CHANGE_STYLES,
+  CHANGE_TEXT,
   CHANGE_TITLE,
+  TABLE_RESIZE,
+  UPDATE_DATE,
 } from './types';
 
 export function tableResize(data) {
@@ -33,4 +34,8 @@ export const applyStyle = (data) => ({
 export const changeTitle = (data) => ({
   type: CHANGE_TITLE,
   data,
+});
+
+export const updateDate = () => ({
+  type: UPDATE_DATE,
 });
