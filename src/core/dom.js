@@ -13,6 +13,7 @@ class Dom {
     }
     return this.$el.innerHTML.trim();
   }
+
   text(text) {
     if (typeof text !== 'undefined') {
       this.$el.textContent = text;
