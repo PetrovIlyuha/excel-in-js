@@ -14,7 +14,8 @@
     "no-unused-vars": "off",
     "indent": "off",
     "space-before-function-paren": "off",
-    "no-case-declarations": "off"
+    "no-case-declarations": "off",
+    "no-restricted-modules": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }
